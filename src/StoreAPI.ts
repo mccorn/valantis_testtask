@@ -1,7 +1,16 @@
 import md5 from "md5-ts";
 
-const url = "http://api.valantis.store:40000/";
-const key = md5("Valantis_20240226");
+const getKey = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return md5(`Valantis_${year}${month > 9 ? month : "0" + month}${day > 9 ? day : "0" + day}`)
+}
+
+const url = "https://api.valantis.store:41000/";
+const key = getKey();
 const headers = { "X-Auth": key, 'Content-Type': 'application/json' };
 const retryOptions = {
   retryCatchIf: (response: Response) => response.status !== 200,
