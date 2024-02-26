@@ -22,7 +22,7 @@ function Gallery(props: GalleryProps) {
   const [numPage, setNumPage] = useState(currentPage);
   const countPages = Math.ceil(totalCount / countPerPage);
 
-  useEffect(() => {onChangePage(currentPage)}, [currentPage])
+  useEffect(() => {setNumPage(currentPage)}, [currentPage])
 
   const handlePrevClick = () => setNumPage((prev) => {
     const next = Math.max(prev - 1, 0);

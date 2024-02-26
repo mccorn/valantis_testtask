@@ -23,6 +23,7 @@ function App() {
   }
 
   const handleSetFilters = () => {
+    setPage(0);
     const params = {} as filterParams;
 
     if (productNameFilterValue) params.product = productNameFilterValue
@@ -31,11 +32,13 @@ function App() {
 
     if (params.product || params.brand || params.price) {
       StoreAPI.getIdsByFilter(params).then(data => {
+        if (!data) return;
         const filtered = [...(new Set(data.result))];
         dispatch(setIds(filtered));
       })
     } else {
       StoreAPI.getIdsAll().then(data => {
+        if (!data) return;
         const filtered = [...(new Set(data.result))];
         dispatch(setIds(filtered));
       })
@@ -50,7 +53,7 @@ function App() {
       setData(null);
       StoreAPI.getItems(filteredIds)
         .then(data => {
-          dispatch(setProducts(data.result));
+          if (data) dispatch(setProducts(data.result));
         })
     } else {
       updateData(page);
@@ -63,6 +66,7 @@ function App() {
 
   useEffect(() => {
     StoreAPI.getIdsAll().then(data => {
+      if (!data) return;
       const filtered = [...(new Set(data.result))];
       dispatch(setIds(filtered));
     })

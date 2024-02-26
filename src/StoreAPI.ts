@@ -35,7 +35,10 @@ function retryPromise<T>(promise: () => Promise<T>, options: retryPromiseOptions
   let _promise = promise();
 
   for (var i = 1; i < retries; i++)
-    _promise = _promise.catch((value) => retryCatchIf(value) ? promise() : Promise.reject(value))
+    _promise = _promise.catch((value) => {
+      console.log("error: ", value.status)
+      return retryCatchIf(value) ? promise() : Promise.reject(value)
+    })
       .then((value) => retryIf(value) ? promise() : Promise.reject(value));
 
   return _promise;
@@ -69,7 +72,7 @@ class StoreAPI {
   }
 
   async retryFetch(url: string, options: RequestInit) {
-    return await retryPromise(() => fetch(url, options), retryOptions).then(response => response.json()).catch(console.log)
+    return await retryPromise(() => fetch(url, options), retryOptions).then(response => response.json()).catch(error => console.log("retry_error: ", error))
   }
 }
 
