@@ -86,6 +86,7 @@ function App() {
           countPerPage={countPerPage}
           totalCount={ids.length}
           onChangePage={handleChangePage}
+          currentPage={page}
         />
       </main>
     </div>

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from './Card';
 import { CardData } from '../types';
 
 type GalleryProps = {
+  currentPage: number,
   totalCount: number,
   countPerPage: number,
   data?: CardData[] | null,
@@ -11,14 +12,17 @@ type GalleryProps = {
 
 function Gallery(props: GalleryProps) {
   const {
+    currentPage = 0,
     totalCount = 4,
     countPerPage = 4,
     data = [],
     onChangePage
   } = props;
 
-  const [numPage, setNumPage] = useState(0);
+  const [numPage, setNumPage] = useState(currentPage);
   const countPages = Math.ceil(totalCount / countPerPage);
+
+  useEffect(() => {onChangePage(currentPage)}, [currentPage])
 
   const handlePrevClick = () => setNumPage((prev) => {
     const next = Math.max(prev - 1, 0);
@@ -35,7 +39,7 @@ function Gallery(props: GalleryProps) {
     <div className="gallery column">
       <div className="gallery__header" style={{ marginBottom: 20 }}>
         <button onClick={handlePrevClick} disabled={numPage === 0}>prev</button>
-        {data?.length ? numPage + 1 : 0} / {countPages}
+        {numPage + 1} / {countPages}
         <button onClick={handleNextClick} disabled={numPage === countPages - 1}>next</button>
       </div>
       <div className="gallery__body">
