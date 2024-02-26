@@ -32,15 +32,17 @@ function Gallery(props: GalleryProps) {
   });
 
   return (
-    <div className="column">
+    <div className="gallery column">
       <div className="gallery__header" style={{ marginBottom: 20 }}>
         <button onClick={handlePrevClick} disabled={numPage === 0}>prev</button>
-        {numPage + 1} / {countPages}
-        <button onClick={handleNextClick} disabled={numPage === countPages}>next</button>
+        {data?.length ? numPage + 1 : 0} / {countPages}
+        <button onClick={handleNextClick} disabled={numPage === countPages - 1}>next</button>
       </div>
       <div className="gallery__body">
         {
-          data ? (data.length ? data.map((node, idx) => <Card key={idx} data={node} />) : "Empty") : "Loading..."
+          data 
+            ? (data.length ? data.map((node, idx) => <Card key={idx} data={node} />) : "Empty") 
+            : "Loading..."
         }
       </div>
     </div>

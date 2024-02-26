@@ -16,7 +16,7 @@ function App() {
   const [data, setData] = useState([]) as any[];
   const dispatch = useDispatch();
   const { ids, products } = useSelector((state: RootState) => state.products);
-  const countPerPage = 5;
+  const countPerPage = 50;
 
   const updateData = (page: number) => {
     setData(ids.slice(page * countPerPage, (page + 1) * countPerPage).map((id: string) => products[id]))
@@ -27,11 +27,9 @@ function App() {
 
     if (productNameFilterValue) params.product = productNameFilterValue
     if (brandFilterValue) params.brand = brandFilterValue
-    if (Number(priceFilterValue)) params.price = priceFilterValue
+    if (Number(priceFilterValue)) params.price = Number(priceFilterValue)
 
     if (params.product || params.brand || params.price) {
-
-      console.log("handleSetFilters", params)
       StoreAPI.getIdsByFilter(params).then(data => {
         const filtered = [...(new Set(data.result))];
         dispatch(setIds(filtered));
@@ -76,6 +74,12 @@ function App() {
 
   return (
     <div className="flex">
+      <aside className="filterForm column">
+        <input value={productNameFilterValue} placeholder={"input name"} onInput={(e: ChangeInputEvent) => setProductNameFilterValue(e.target.value)} />
+        <input value={brandFilterValue} placeholder={"input brand"} onInput={(e: ChangeInputEvent) => setBrandFilterValue(e.target.value)} />
+        <input value={priceFilterValue} placeholder={"input price"} onInput={handleChangePrice} />
+        <button onClick={() => handleSetFilters()}>Применить</button>
+      </aside>
       <main>
         <Gallery
           data={data}
@@ -84,12 +88,6 @@ function App() {
           onChangePage={handleChangePage}
         />
       </main>
-      <aside className="filterForm column">
-        <input value={productNameFilterValue} placeholder={"input name"} onInput={(e: ChangeInputEvent) => setProductNameFilterValue(e.target.value)} />
-        <input value={brandFilterValue} placeholder={"input brand"} onInput={(e: ChangeInputEvent) => setBrandFilterValue(e.target.value)} />
-        <input value={priceFilterValue} placeholder={"input price"} onInput={handleChangePrice} />
-        <button onClick={() => handleSetFilters()}>Применить</button>
-      </aside>
     </div>
   )
 }
