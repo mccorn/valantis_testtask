@@ -1,6 +1,6 @@
 import md5 from "md5-ts";
 
-const url = "//api.valantis.store:40000/";
+const url = "hhtp://api.valantis.store:40000/";
 const key = md5("Valantis_20240226");
 const headers = { "X-Auth": key, 'Content-Type': 'application/json' };
 
