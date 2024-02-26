@@ -1,0 +1,18 @@
+.card {
+    position: relative;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 15px 15px 40px;
+}
+
+.card__title {
+    margin-bottom: 10px;
+}
+
+.card__subtext {
+    position: absolute;
+    font-size: 10px;
+    color: #646cff;
+    bottom: 10px;
+    font-style: italic;
+}
